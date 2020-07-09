@@ -16,5 +16,6 @@ public class Test {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        myjedis.close();
     }
 }

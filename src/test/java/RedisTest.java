@@ -23,8 +23,9 @@ public class RedisTest {
     }
     @Test
     public void testSet(){
+        myJedis.select(1);
         Set<String> keys = myJedis.keys("*");
-        System.out.println(keys.size());
+        System.out.println(keys);
     }
     @Test
     public void testJson(){
