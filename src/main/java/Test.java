@@ -5,17 +5,6 @@ import redis.clients.jedis.Jedis;
 
 public class Test {
     public static void main(String[] args) {
-        Jedis myjedis = new Jedis();
-        myjedis.select(1);
-        ObjectMapper mapper = new ObjectMapper();
-        User newUser = new User(1,"Ezzra","004325","Los Angles");
-        try {
-            String s = mapper.writeValueAsString(newUser);
-            System.out.println(s);
-            myjedis.set("user:1",s);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        myjedis.close();
+        System.out.println("Related Code Location: test/java/RedisTest");
     }
 }
