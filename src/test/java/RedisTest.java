@@ -1,9 +1,12 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.User;
+import org.junit.After;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.ListPosition;
+import redis.clients.jedis.Tuple;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,7 +28,10 @@ public class RedisTest {
 //        myJedis.lrem("myList",0,"0");
 //        myJedis.lpop("myList");
 //        myJedis.ltrim("myList",3,5);
-        System.out.println(myJedis.llen("myList"));
+//        System.out.println(myJedis.llen("myList"));
+//        myJedis.rpush("myList","newItem1","newItem2","newItem3","newItem4");
+        myJedis.lpush("myList","point");
+        myJedis.linsert("myList", ListPosition.AFTER,"point","NewUnit");
         myJedis.close();
     }
     @Test
@@ -58,9 +64,11 @@ public class RedisTest {
 //        System.out.println("Inter set of (numSet1,numset2) : "+sinter);
 //        Set<String> sdiff = myJedis.sdiff("numSet2","numSet1");
 //        System.out.println("Difference of (numSet1,numset2) : "+sdiff);
-        myJedis.spop("numSet1");
-        Set<String> numSet1 = myJedis.smembers("numSet1");
-        System.out.println(numSet1);
+//        myJedis.spop("numSet1");
+//        Set<String> numSet1 = myJedis.smembers("numSet1");
+//        System.out.println(numSet1);
+        Long numSet2 = myJedis.scard("numSet2");
+        System.out.println(numSet2);
         myJedis.close();
     }
     @Test
@@ -92,6 +100,7 @@ public class RedisTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        myJedis.close();
 
     }
     @Test
@@ -102,13 +111,26 @@ public class RedisTest {
         map.put("address","LA");
         myJedis.hset("info",map);
         System.out.println();
+        myJedis.close();
     }
     @Test
-    public void testList(){
-
+    public void testSortedSet(){
+        myJedis.select(1);
+//        myJedis.zadd("benchMark",5494.6,"AMD Ryzen 4800H 2.9Ghz-4.2Ghz 8c16t.");
+//        myJedis.zadd("benchMark",3701,"INTEL Core i7-8700K 3.7GHz 6c12t.");
+//        myJedis.zadd("benchMark",5423,"INTEL Core i9-9900KF 3.6GHz 8c16t.");
+        System.out.println(myJedis.zrevrange("benchMark", 0, 1));
+//        System.out.println(myJedis.zscore("benchMark", "AMD Ryzen 4800H 2.9Ghz-4.2Ghz 8c16t."));
+//        Set<Tuple> benchMark = myJedis.zrevrangeWithScores("benchMark", 0, -1);
+//        System.out.println(benchMark);
+        myJedis.close();
     }
     @Test
-    public void testSortedList(){
-
+    public void testSecond()
+    {
+        myJedis.select(1);
+        myJedis.set("SecondToBuy","Lenovo Legion R7000 r74800H 5599");
+        myJedis.expire("SecondToBuy",30);
+        myJedis.close();
     }
 }
